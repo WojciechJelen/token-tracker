@@ -1,8 +1,24 @@
 import { contractFactory } from "../utils";
-import { DAI_ADDRESS } from "../constants";
+import { DAI_ADDRESS, USDT_ADDRESS, LINK_ADDRESS } from "../constants";
+import { AddressBalances } from "../types";
 
-export const getTokenBalance = async (address?: string) => {
+export const getTokenBalances = async (
+  address: string
+): Promise<AddressBalances> => {
   const daiContract = contractFactory(DAI_ADDRESS);
-  console.log(daiContract);
-  // TODO: use ethers.js to get token balance
+  const usdtContract = contractFactory(USDT_ADDRESS);
+  const linkContract = contractFactory(LINK_ADDRESS);
+
+  const [daiBalance, linkBalance, usdtBalance] = await Promise.all([
+    daiContract.balanceOf(address),
+    linkContract.balanceOf(address),
+    usdtContract.balanceOf(address),
+  ]);
+
+  return {
+    address,
+    daiBalance,
+    linkBalance,
+    usdtBalance,
+  };
 };
