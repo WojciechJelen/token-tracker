@@ -2,7 +2,7 @@ import { contractFactory } from "../utils";
 import { DAI_ADDRESS, USDT_ADDRESS, LINK_ADDRESS } from "../constants";
 import { AddressBalances } from "../types";
 
-export const getTokenBalances = async (
+export const getTokensBalances = async (
   address: string
 ): Promise<AddressBalances> => {
   const daiContract = contractFactory(DAI_ADDRESS);
