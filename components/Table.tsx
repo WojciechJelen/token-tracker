@@ -1,5 +1,12 @@
 import * as React from "react";
 import { useTable } from "react-table";
+import {
+  StyledHeaderTr,
+  StyledTable,
+  StyledTd,
+  StyledTh,
+  StyledTr,
+} from "../styled";
 
 type PropsType = {
   columns: {
@@ -17,16 +24,19 @@ export const Table: React.FC<PropsType> = ({ columns, data }) => {
     tableInstance;
 
   return (
-    <table {...getTableProps()}>
+    <StyledTable {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+          <StyledHeaderTr
+            {...headerGroup.getHeaderGroupProps()}
+            key={headerGroup.getHeaderGroupProps().key}
+          >
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()} key={column.id}>
+              <StyledTh {...column.getHeaderProps()} key={column.id}>
                 {column.render("Header")}
-              </th>
+              </StyledTh>
             ))}
-          </tr>
+          </StyledHeaderTr>
         ))}
       </thead>
 
@@ -34,18 +44,21 @@ export const Table: React.FC<PropsType> = ({ columns, data }) => {
         {rows.map((row) => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()} key={row.id}>
+            <StyledTr {...row.getRowProps()} key={row.id}>
               {row.cells.map((cell) => {
                 return (
-                  <td {...cell.getCellProps()} key={cell.getCellProps().key}>
+                  <StyledTd
+                    {...cell.getCellProps()}
+                    key={cell.getCellProps().key}
+                  >
                     {cell.render("Cell")}
-                  </td>
+                  </StyledTd>
                 );
               })}
-            </tr>
+            </StyledTr>
           );
         })}
       </tbody>
-    </table>
+    </StyledTable>
   );
 };

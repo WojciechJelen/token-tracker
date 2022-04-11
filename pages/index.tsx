@@ -2,15 +2,21 @@ import type { NextPage } from "next";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Head from "next/head";
 import { useQueries } from "react-query";
-import { useTable } from "react-table";
 
 import { getTokensBalances } from "../api";
 import { ethers } from "ethers";
 import Modal from "../components/Modal";
 import { Table } from "../components/Table";
-import { ThemeSwitcherContext } from "./_app";
-
-const localStorageKey = "tokensBalances";
+import { ThemeSwitcherContext } from "../context/themeSwitcherContext";
+import { TOKENS_BALANCES_STORAGE_KEY } from "../constants";
+import {
+  StyledButton,
+  StyledContainer,
+  StyledMain,
+  StyledNavbar,
+  StyledTable,
+  StyledThemeSwitchButton,
+} from "../styled";
 
 const ADDRESSES = [
   "0xd54921ccf100cc6a78acbbd4e55fd57c9b50ea7a",
@@ -26,7 +32,7 @@ const Home: NextPage = () => {
   const [alreadyTracked, setAlreadyTracked] = useState(false);
 
   useEffect(() => {
-    const storedAddresses = localStorage.getItem(localStorageKey);
+    const storedAddresses = localStorage.getItem(TOKENS_BALANCES_STORAGE_KEY);
     if (storedAddresses) {
       setTrackedAddresses(JSON.parse(storedAddresses));
     }
@@ -78,7 +84,7 @@ const Home: NextPage = () => {
       setTrackedAddresses(newAdressesList);
       if (typeof window !== "undefined") {
         window.localStorage.setItem(
-          localStorageKey,
+          TOKENS_BALANCES_STORAGE_KEY,
           JSON.stringify(newAdressesList)
         );
       }
@@ -154,13 +160,17 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <div>
-          <button onClick={switchDarkMode}>Switch dark mode</button>
-          <button onClick={handleOpenModal}>Add address +</button>
+      <StyledMain>
+        <StyledNavbar>
+          <StyledThemeSwitchButton onClick={switchDarkMode}>
+            {`Switch to ${isDark ? "light" : "dark"} ${isDark ? "🌙" : "🌞"}`}
+          </StyledThemeSwitchButton>
+        </StyledNavbar>
+        <StyledContainer>
+          <StyledButton onClick={handleOpenModal}>Add address</StyledButton>
           <Table columns={columns} data={data} />
-        </div>
-      </main>
+        </StyledContainer>
+      </StyledMain>
 
       <Modal onClose={handleCloseModal} show={showModal}>
         <div>{alreadyTracked && "You are already tracking that address!"}</div>
