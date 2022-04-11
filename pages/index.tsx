@@ -17,6 +17,7 @@ import {
   StyledTable,
   StyledThemeSwitchButton,
 } from "../styled";
+import { formatUnit } from "../utils";
 
 const ADDRESSES = [
   "0xd54921ccf100cc6a78acbbd4e55fd57c9b50ea7a",
@@ -113,9 +114,9 @@ const Home: NextPage = () => {
 
       return {
         address: data?.address,
-        daiBalance: data?.daiBalance?.toString() ?? "",
-        usdtBalance: data?.usdtBalance?.toString() ?? "",
-        linkBalance: data?.linkBalance?.toString() ?? "",
+        daiBalance: formatUnit(data?.daiBalance) ?? "",
+        usdtBalance: formatUnit(data?.usdtBalance) ?? "",
+        linkBalance: formatUnit(data?.linkBalance) ?? "",
       };
     });
 
