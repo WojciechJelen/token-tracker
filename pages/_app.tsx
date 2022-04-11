@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
     [setDarkTheme]
   );
-  console.log("###isDark", isDark);
+
   return (
     <>
       <Global

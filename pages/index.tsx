@@ -4,20 +4,21 @@ import Head from "next/head";
 import { useQueries } from "react-query";
 
 import { getTokensBalances } from "../api";
-import { ethers } from "ethers";
 import Modal from "../components/Modal";
 import { Table } from "../components/Table";
 import { ThemeSwitcherContext } from "../context/themeSwitcherContext";
 import { TOKENS_BALANCES_STORAGE_KEY } from "../constants";
 import {
+  StyledActyionsWrapper,
   StyledButton,
   StyledContainer,
+  StyledInput,
   StyledMain,
   StyledNavbar,
-  StyledTable,
   StyledThemeSwitchButton,
 } from "../styled";
 import { formatUnit } from "../utils";
+import { ethers } from "ethers";
 
 const ADDRESSES = [
   "0xd54921ccf100cc6a78acbbd4e55fd57c9b50ea7a",
@@ -30,9 +31,16 @@ const Home: NextPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [trackedAddresses, setTrackedAddresses] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [alreadyTracked, setAlreadyTracked] = useState(false);
+  const [warningMessage, setWarning] = useState<string | null>(null);
 
   useEffect(() => {
+    /**
+     * @description
+     * That was the only way to read from cache
+     * Abtracting local storage functionalities to a separate hook and orchestrating it with useState
+     * was impossible, because it was not possible to read from storage on the server side and
+     * that would cause content mismatch during SSR
+     */
     const storedAddresses = localStorage.getItem(TOKENS_BALANCES_STORAGE_KEY);
     if (storedAddresses) {
       setTrackedAddresses(JSON.parse(storedAddresses));
@@ -63,7 +71,7 @@ const Home: NextPage = () => {
 
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
-    setAlreadyTracked(false);
+    setWarning(null);
     setInputValue("");
   }, []);
 
@@ -74,12 +82,21 @@ const Home: NextPage = () => {
   const onTrackAddress = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
-      if (trackedAddresses.find((address) => address === inputValue)) {
-        setAlreadyTracked(true);
+
+      try {
+        ethers.utils.getAddress(inputValue);
+      } catch (error) {
+        console.log(error);
+        setWarning("Invalid address");
         return;
       }
 
-      setAlreadyTracked(false);
+      if (trackedAddresses.find((address) => address === inputValue)) {
+        setWarning("Address already tracked");
+        return;
+      }
+
+      setWarning(null);
 
       const newAdressesList = [...trackedAddresses, inputValue];
       setTrackedAddresses(newAdressesList);
@@ -173,16 +190,21 @@ const Home: NextPage = () => {
         </StyledContainer>
       </StyledMain>
 
-      <Modal onClose={handleCloseModal} show={showModal}>
-        <div>{alreadyTracked && "You are already tracking that address!"}</div>
-        <label htmlFor="address">Address</label>
-        <input
+      <Modal
+        onClose={handleCloseModal}
+        show={showModal}
+        title="Add address to track balances"
+      >
+        <div>{warningMessage}</div>
+        <StyledInput
           name="address"
           id="address"
           value={inputValue}
           onChange={onInputChange}
         />
-        <button onClick={onTrackAddress}>Track address</button>
+        <StyledActyionsWrapper>
+          <StyledButton onClick={onTrackAddress}>Track address</StyledButton>
+        </StyledActyionsWrapper>
       </Modal>
     </div>
   );

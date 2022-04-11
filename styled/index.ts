@@ -99,3 +99,21 @@ export const StyledNavbar = styled.nav`
   justify-content: flex-end;
   align-items: center;
 `;
+
+export const StyledInput = styled.input`
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 2px solid ${(props) => props.theme.primary};
+  border-radius: 0.6em;
+  margin-bottom: 0.5rem;
+  &:focus {
+    outline: 0;
+  }
+`;
+
+export const StyledActyionsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
