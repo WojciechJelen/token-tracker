@@ -6,6 +6,7 @@ import { useTable } from "react-table";
 
 import { getTokensBalances } from "../api";
 import { ethers } from "ethers";
+import Modal from "../components/Modal";
 
 const localStorageKey = "tokensBalances";
 
@@ -18,6 +19,8 @@ const ADDRESSES = [
 const Home: NextPage = () => {
   const [inputValue, setInputValue] = useState("");
   const [trackedAddresses, setTrackedAddresses] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [alreadyTracked, setAlreadyTracked] = useState(false);
 
   useEffect(() => {
     const storedAddresses = localStorage.getItem(localStorageKey);
@@ -44,9 +47,26 @@ const Home: NextPage = () => {
     []
   );
 
+  const handleOpenModal = useCallback(() => {
+    setShowModal(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setShowModal(false);
+    setAlreadyTracked(false);
+    setInputValue("");
+  }, []);
+
   const onTrackAddress = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
+      if (trackedAddresses.find((address) => address === inputValue)) {
+        setAlreadyTracked(true);
+        return;
+      }
+
+      setAlreadyTracked(false);
+
       const newAdressesList = [...trackedAddresses, inputValue];
       setTrackedAddresses(newAdressesList);
       if (typeof window !== "undefined") {
@@ -56,6 +76,7 @@ const Home: NextPage = () => {
         );
       }
       setInputValue("");
+      setShowModal(false);
     },
     [trackedAddresses, inputValue]
   );
@@ -94,7 +115,7 @@ const Home: NextPage = () => {
     () => [
       {
         Header: "Address",
-        accessor: "address", // accessor is the "key" in the data
+        accessor: "address",
       },
       {
         Header: "DAI Balance",
@@ -135,16 +156,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <label htmlFor="address">address</label>
-        <input
-          name="address"
-          id="address"
-          value={inputValue}
-          onChange={onInputChange}
-        />
-        <button onClick={onTrackAddress}>Track address</button>
         <div>
-          {JSON.stringify(trackedAddresses, null, 2)}
+          <button onClick={handleOpenModal}>Add address +</button>
 
           <table {...getTableProps()}>
             <thead>
@@ -181,6 +194,18 @@ const Home: NextPage = () => {
           </table>
         </div>
       </main>
+
+      <Modal onClose={handleCloseModal} show={showModal}>
+        <div>{alreadyTracked && "You are already tracking that address!"}</div>
+        <label htmlFor="address">Address</label>
+        <input
+          name="address"
+          id="address"
+          value={inputValue}
+          onChange={onInputChange}
+        />
+        <button onClick={onTrackAddress}>Track address</button>
+      </Modal>
     </div>
   );
 };
