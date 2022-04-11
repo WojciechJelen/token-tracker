@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Head from "next/head";
 import { useQueries } from "react-query";
 import { useTable } from "react-table";
@@ -8,6 +8,7 @@ import { getTokensBalances } from "../api";
 import { ethers } from "ethers";
 import Modal from "../components/Modal";
 import { Table } from "../components/Table";
+import { ThemeSwitcherContext } from "./_app";
 
 const localStorageKey = "tokensBalances";
 
@@ -18,6 +19,7 @@ const ADDRESSES = [
 ];
 
 const Home: NextPage = () => {
+  const { setDarkMode, isDark } = useContext(ThemeSwitcherContext);
   const [inputValue, setInputValue] = useState("");
   const [trackedAddresses, setTrackedAddresses] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -58,6 +60,10 @@ const Home: NextPage = () => {
     setInputValue("");
   }, []);
 
+  const switchDarkMode = useCallback(() => {
+    setDarkMode(!isDark);
+  }, [isDark, setDarkMode]);
+
   const onTrackAddress = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
@@ -82,8 +88,6 @@ const Home: NextPage = () => {
     [trackedAddresses, inputValue]
   );
 
-  console.log("###results", results);
-
   const isLoading =
     results.some((resultResponse) => {
       resultResponse.isFetching || resultResponse.isRefetching;
@@ -100,7 +104,7 @@ const Home: NextPage = () => {
   const data = useMemo(() => {
     const data = results.map((resultResponse) => {
       const { data } = resultResponse;
-      console.log("###DATA", data);
+
       return {
         address: data?.address,
         daiBalance: data?.daiBalance?.toString() ?? "",
@@ -152,6 +156,7 @@ const Home: NextPage = () => {
 
       <main>
         <div>
+          <button onClick={switchDarkMode}>Switch dark mode</button>
           <button onClick={handleOpenModal}>Add address +</button>
           <Table columns={columns} data={data} />
         </div>
