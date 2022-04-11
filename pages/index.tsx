@@ -31,7 +31,7 @@ const Home: NextPage = () => {
       return {
         queryKey: ["balances", address],
         queryFn: () => getTokensBalances(address),
-        // refetchInterval: 5000,
+        refetchInterval: 15000,
       };
     })
   );
@@ -129,7 +129,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Create Next App</title>
+        <title>Koii Assignment App</title>
         <meta name="description" content="Koii asssignment app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
