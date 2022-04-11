@@ -7,6 +7,7 @@ import { useTable } from "react-table";
 import { getTokensBalances } from "../api";
 import { ethers } from "ethers";
 import Modal from "../components/Modal";
+import { Table } from "../components/Table";
 
 const localStorageKey = "tokensBalances";
 
@@ -133,9 +134,6 @@ const Home: NextPage = () => {
     []
   );
 
-  /* @ts-ignore */
-  const tableInstance = useTable({ columns, data });
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -143,9 +141,6 @@ const Home: NextPage = () => {
   if (hasError) {
     return <div>Something went wrong...</div>;
   }
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance;
 
   return (
     <div>
@@ -158,40 +153,7 @@ const Home: NextPage = () => {
       <main>
         <div>
           <button onClick={handleOpenModal}>Add address +</button>
-
-          <table {...getTableProps()}>
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-                  {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()} key={column.id}>
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()} key={row.id}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td
-                          {...cell.getCellProps()}
-                          key={cell.getCellProps().key}
-                        >
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <Table columns={columns} data={data} />
         </div>
       </main>
 
