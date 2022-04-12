@@ -19,7 +19,7 @@ import {
   StyledThemeSwitchButton,
   StyledWarning,
 } from "../styled";
-import { formatUnit } from "../utils";
+import { formatDai, formatLink, formatUsdt } from "../utils";
 import { ethers } from "ethers";
 
 const ADDRESSES = [
@@ -133,9 +133,9 @@ const Home: NextPage = () => {
 
       return {
         address: data?.address,
-        daiBalance: formatUnit(data?.daiBalance) ?? "",
-        usdtBalance: formatUnit(data?.usdtBalance) ?? "",
-        linkBalance: formatUnit(data?.linkBalance) ?? "",
+        daiBalance: formatDai(data?.daiBalance) ?? "",
+        usdtBalance: formatUsdt(data?.usdtBalance) ?? "",
+        linkBalance: formatLink(data?.linkBalance) ?? "",
       };
     });
 
