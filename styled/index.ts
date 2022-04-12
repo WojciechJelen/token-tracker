@@ -69,6 +69,10 @@ export const StyledButton = styled.button`
     color: ${(props) => props.theme.text};
     outline: 0;
   }
+
+  @media (max-width: 420px) {
+    width: 100%;
+  }
 `;
 
 export const StyledThemeSwitchButton = styled.button`
@@ -136,6 +140,10 @@ export const StyledModal = styled.div`
   height: 250px;
   border-radius: 15px;
   padding: 15px;
+
+  @media (max-width: 420px) {
+    width: 85%;
+  }
 `;
 
 export const StyledModalOverlay = styled.div`
@@ -154,6 +162,10 @@ export const StyledTitle = styled.h3`
   font-size: 1.5rem;
   color: ${(props) => props.theme.text};
   margin-bottom: 0.5rem;
+
+  @media (max-width: 420px) {
+    font-size: 1.25rem;
+  }
 `;
 
 export const StyledCloseButton = styled.button`
@@ -170,4 +182,8 @@ export const StyledWarning = styled.div`
   color: ${(props) => props.theme.warning};
   font-size: 1rem;
   margin-bottom: 0.5rem;
+`;
+
+export const StyledTableWrapper = styled.div`
+  overflow-x: auto;
 `;

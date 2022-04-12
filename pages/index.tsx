@@ -15,6 +15,7 @@ import {
   StyledInput,
   StyledMain,
   StyledNavbar,
+  StyledTableWrapper,
   StyledThemeSwitchButton,
   StyledWarning,
 } from "../styled";
@@ -187,7 +188,9 @@ const Home: NextPage = () => {
         </StyledNavbar>
         <StyledContainer>
           <StyledButton onClick={handleOpenModal}>Add address</StyledButton>
-          <Table columns={columns} data={data} />
+          <StyledTableWrapper>
+            <Table columns={columns} data={data} />
+          </StyledTableWrapper>
         </StyledContainer>
       </StyledMain>
 
