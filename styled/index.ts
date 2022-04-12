@@ -104,6 +104,8 @@ export const StyledInput = styled.input`
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
+  background-color: transparent;
+  color: ${(props) => props.theme.text};
   border: 2px solid ${(props) => props.theme.primary};
   border-radius: 0.6em;
   margin-bottom: 0.5rem;
@@ -116,4 +118,56 @@ export const StyledActyionsWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
+`;
+
+export const StyledModalBody = styled.div`
+  padding-top: 10px;
+`;
+
+export const StyledModalHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 25px;
+`;
+
+export const StyledModal = styled.div`
+  background: ${(props) => props.theme.background};
+  width: 500px;
+  height: 250px;
+  border-radius: 15px;
+  padding: 15px;
+`;
+
+export const StyledModalOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+export const StyledTitle = styled.h3`
+  font-size: 1.5rem;
+  color: ${(props) => props.theme.text};
+  margin-bottom: 0.5rem;
+`;
+
+export const StyledCloseButton = styled.button`
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: ${(props) => props.theme.text};
+  font-size: 1.5rem;
+  pointer-events: all;
+  cursor: pointer;
+`;
+
+export const StyledWarning = styled.div`
+  color: ${(props) => props.theme.warning};
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 `;

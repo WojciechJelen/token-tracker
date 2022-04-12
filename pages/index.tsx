@@ -16,6 +16,7 @@ import {
   StyledMain,
   StyledNavbar,
   StyledThemeSwitchButton,
+  StyledWarning,
 } from "../styled";
 import { formatUnit } from "../utils";
 import { ethers } from "ethers";
@@ -195,7 +196,7 @@ const Home: NextPage = () => {
         show={showModal}
         title="Add address to track balances"
       >
-        <div>{warningMessage}</div>
+        <StyledWarning>{warningMessage}</StyledWarning>
         <StyledInput
           name="address"
           id="address"

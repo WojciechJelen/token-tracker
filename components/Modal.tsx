@@ -1,6 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as ReactDOM from "react-dom";
 import styled from "@emotion/styled";
+import {
+  StyledModalOverlay,
+  StyledModal,
+  StyledModalHeader,
+  StyledModalBody,
+  StyledTitle,
+  StyledCloseButton,
+} from "../styled";
 
 type PropsType = {
   title: string;
@@ -30,11 +38,9 @@ export const Modal: React.FC<PropsType> = ({
     <StyledModalOverlay>
       <StyledModal>
         <StyledModalHeader>
-          <a href="#" onClick={handleCloseClick}>
-            x
-          </a>
+          <StyledCloseButton onClick={handleCloseClick}>x</StyledCloseButton>
         </StyledModalHeader>
-        <h3>{title}</h3>
+        <StyledTitle>{title}</StyledTitle>
         <StyledModalBody>{children}</StyledModalBody>
       </StyledModal>
     </StyledModalOverlay>
@@ -49,34 +55,5 @@ export const Modal: React.FC<PropsType> = ({
     return null;
   }
 };
-
-const StyledModalBody = styled.div`
-  padding-top: 10px;
-`;
-
-const StyledModalHeader = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  font-size: 25px;
-`;
-
-const StyledModal = styled.div`
-  background: white;
-  width: 500px;
-  height: 250px;
-  border-radius: 15px;
-  padding: 15px;
-`;
-const StyledModalOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-`;
 
 export default Modal;

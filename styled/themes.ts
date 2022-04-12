@@ -6,6 +6,7 @@ export const lightTheme = {
   background: "#fafafa",
   tableHeaderBackground: "#f5f5f5",
   tableHeaderText: "#fff",
+  warning: "#ff0000",
 };
 
 export const darkTheme = {
@@ -16,4 +17,5 @@ export const darkTheme = {
   text: "#fff",
   tableHeaderBackground: "#1f1f1f",
   tableHeaderText: "#fff",
+  warning: "#ffb3b3",
 };
